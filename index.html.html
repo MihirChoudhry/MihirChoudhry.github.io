@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invescon Email Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    label { font-weight: bold; display: block; margin-top: 15px; }
+    textarea, input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 10px; padding: 10px 15px; font-weight: bold; cursor: pointer; }
+    #output { white-space: pre-wrap; background: #f5f5f5; padding: 15px; border: 1px solid #ccc; margin-top: 20px; }
+    .button-group { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .checkbox-group label { font-weight: normal; display: flex; align-items: center; gap: 5px; }
+  </style>
+</head>
+<body>
+  <h2>📩 Invescon Client Email Generator</h2>
+
+  <label for="clientName">Client Name:</label>
+  <input type="text" id="clientName" placeholder="e.g., Ramesh Patel">
+
+  <label>Client Goals (select all that apply):</label>
+  <div class="checkbox-group">
+    <label><input type="checkbox" name="goals" value="Retirement Planning"> Retirement Planning </label>
+    <label><input type="checkbox" name="goals" value="Child Education"> Child Education </label>
+    <label><input type="checkbox" name="goals" value="Child Marriage"> Child Marriage </label>
+    <label><input type="checkbox" name="goals" value="Dream Home">Dream Home </label>
+    <label><input type="checkbox" name="goals" value="Wealth Accumulation"> Wealth Accumulation </label>
+    <label><input type="checkbox" name="goals" value="Passive Income"> Passive Income </label>
+    <label><input type="checkbox" name="goals" value="Other"> Other </label>
+  </div>
+
+  <label for="riskProfile">Client Risk Profile:</label>
+  <select id="riskProfile">
+    <option value="High Growth">High Growth</option>
+    <option value="Growth">Growth</option>
+    <option value="Balanced">Balanced</option>
+    <option value="Conservative">Conservative</option>
+  </select>
+
+  <div class="button-group">
+    <button onclick="generateEmail()">Generate Email</button>
+    <button onclick="copyEmail()">Copy to Clipboard</button>
+  </div>
+
+  <div id="output"></div>
+
+  <script>
+    function getSelectedGoals() {
+      const checkboxes = document.querySelectorAll('input[name="goals"]:checked');
+      return Array.from(checkboxes).map(cb => cb.value);
+    }
+
+    function generateEmail() {
+      const name = document.getElementById("clientName").value || "Client";
+      const risk = document.getElementById("riskProfile").value;
+      const goals = getSelectedGoals();
+
+      let email = `Hi ${name},\n\nThank you for choosing to invest your money with Invescon. We’re thrilled to have you join our growing family of clients who believe in building their wealth with trust, clarity, and smart financial choices.\n\nBased on the questions you answered, your Risk profile is '${risk}'. This profile helps us design investment strategies that align with your financial goals, comfort with market volatility, and time horizon.`;
+
+      email += `\n\n📊 Here’s a quick summary of the four risk profiles we use:\n\n` +
+        `• High Growth – Suitable for investors with high risk tolerance seeking aggressive long-term growth\n` +
+        `• Growth – Ideal for investors comfortable with moderate volatility for better long-term returns\n` +
+        `• Balanced – Designed for those who prefer a mix of equity and debt to balance growth and stability\n` +
+        `• Conservative – Tailored for low-risk investors focusing on capital preservation with modest returns\n`
+        'Do let us know if you feel you risk profile is not accurate as per your desired objective.';
+
+      if (goals.length > 0) {
+        email += `\nBased on your preferences, we've identified the following key goals:\n\n` + goals.map(goal => `• ${goal}`).join("\n");
+      }
+
+      email += `\n\nPlease find attached your customized Investment Plan with the suggested schemes and the proposed asset allocation.  Kindly review and feel free to reach out to us if you have any questions, concerns, or would like to discuss your planned portfolio.\n\n-----------------------------------------------------------------------------------------\n\n📢 Mutual Fund Disclaimer: Mutual Fund investments are subject to market risks. Please read all scheme-related documents carefully before investing. The risk category is for guidance only and should not be considered a recommendation.\n\nBest Regards,\nMihir Choudhry\n📞 +91-9216777288\n 🌐 Website: https://www.invescon.in \n📱 Instagram: https://www.instagram.com/invescon_ \n🔗 LinkedIn: https://www.linkedin.com/company/invesconmf \n💬 WhatsApp: https://wa.me/919216777288`
+      document.getElementById("output").textContent = email;
+    }
+
+    function copyEmail() {
+      const text = document.getElementById("output").textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Email copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>
